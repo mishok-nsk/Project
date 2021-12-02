@@ -1,5 +1,6 @@
-public class RandomSet() {
-    
+
+public class RandomSet {
+    /*
     boolean[] e;
 
     public void add(element) {
@@ -11,5 +12,5 @@ public class RandomSet() {
     }
  
     public Element getRandom() {return null;}
- 
+ */
 }

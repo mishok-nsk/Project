@@ -15,7 +15,7 @@ public class brackets {
                     System.out.print(")");
                 }    
             }
-            
+        in.close();    
         }
     }
 }
