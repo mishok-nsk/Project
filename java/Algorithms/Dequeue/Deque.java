@@ -1,4 +1,4 @@
-package Dequeue;
+package Algorithms.Dequeue;
 import java.util.Iterator;
 import edu.princeton.cs.algs4.StdIn;
 import edu.princeton.cs.algs4.StdOut;
@@ -27,7 +27,8 @@ public class Deque<Item> implements Iterable<Item> {
     { return size == 0;}
 
     // return the number of items on the deque
-    public int size() {return size;}
+    public int size() 
+    { return size;}
 
     // add the item to the front
     public void addFirst(Item item) {
@@ -125,7 +126,7 @@ public class Deque<Item> implements Iterable<Item> {
         for (String s : stringDeque) {
             StdOut.print(s + "->");
         }
-        StdOut.print("\n");
+        StdOut.println();
 
         while (!stringDeque.isEmpty()) {
             if (way) {
