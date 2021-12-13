@@ -24,11 +24,11 @@ public class Deque<Item> implements Iterable<Item> {
 
     // is the deque empty?
     public boolean isEmpty()
-    { return size == 0;}
+    { return size == 0; }
 
     // return the number of items on the deque
     public int size() 
-    { return size;}
+    { return size; }
 
     // add the item to the front
     public void addFirst(Item item) {
@@ -88,7 +88,8 @@ public class Deque<Item> implements Iterable<Item> {
     }
 
     // return an iterator over items in order from front to back
-    public Iterator<Item> iterator() { return new ListIterator();}
+    public Iterator<Item> iterator() 
+    { return new ListIterator(); }
 
     private class ListIterator implements Iterator<Item>
     {
