@@ -12,14 +12,25 @@ public class BruteCollinearPoints {
     int numOfSegments;
 
     public BruteCollinearPoints(Point[] points) {    // finds all line segments containing 4 points
+        if (points == null) {
+            throw new IllegalArgumentException("argument to BruteCollinearPoints constructor is null");
+        }
+
+        for (Point p : points) {
+            if (p == null) {
+                throw new IllegalArgumentException("argument to BruteCollinearPoints constructor is null");
+            }
+        }
+        
+        Arrays.sort(points);
+        for (int i = 1; i < points.length; i++) {
+            if (points[i].compareTo(points[i-1]) == 0) {
+                throw new IllegalArgumentException("argument to BruteCollinearPoints contains a repeated point");
+            }
+        }
         segments = new LineSegment[10];
         numOfSegments = 0;
         int length = points.length;
-        Arrays.sort(points);
-        /*
-        for(Point p : points) {
-            StdOut.println(p);
-        } */
         
         for (int i = 0; i < length - 3; i++) {
             for (int j = i + 1; j < length - 2; j++) {

@@ -9,36 +9,62 @@ public class FastCollinearPoints {
     int numOfSegments;
 
     public FastCollinearPoints(Point[] points) {    // finds all line segments containing 4 points
+        if (points == null) {
+            throw new IllegalArgumentException("argument to FastCollinearPoints constructor is null");
+        }
+
+        for (Point p : points) {
+            if (p == null) {
+                throw new IllegalArgumentException("argument to FastCollinearPoints constructor is null");
+            }
+        }
+        
+        Arrays.sort(points);
+        for (int i = 1; i < points.length; i++) {
+            if (points[i].compareTo(points[i-1]) == 0) {
+                throw new IllegalArgumentException("argument to FastCollinearPoints contains a repeated point");
+            }
+        }
+        
         segments = new LineSegment[10];
         numOfSegments = 0;
-        Arrays.sort(points);
         int length = points.length;
         for (int i = 0; i < length - 3; i++) {
-            Arrays.sort(points, i+1, length, points[i].slopeOrder());
-            segmentForPoint(i, points);
-            Arrays.sort(points, i+1, length);
+            Arrays.sort(points, points[i].slopeOrder());
+            segmentForPoint(points);
+            Arrays.sort(points);
         }
         resize(numOfSegments);
     }
 
-    private void segmentForPoint(int n, Point[] points) {
+    private void segmentForPoint(Point[] points) {
         int counter = 1;
-        double slope = points[n].slopeTo(points[n+1]);
-        for (int j = n + 2; j < points.length; j++) {
+        double slope = points[0].slopeTo(points[1]);
+        for (int j = 2; j < points.length; j++) {
                    
-            if (slope == points[n].slopeTo(points[j])) {
+            if (slope == points[0].slopeTo(points[j])) {
                 counter++;
 
             }
             else {
-                if (counter > 2) 
-                    addSegment(points[n],points[j-1]);
-                slope = points[n].slopeTo(points[j]);
+                if (counter > 2) {
+                    Arrays.sort(points, j - counter, j);
+                    if(points[0].compareTo(points[j - counter]) < 0)
+                        addSegment(points[0],points[j-1]);
+                    
+                }
+
+                slope = points[0].slopeTo(points[j]);
                 counter = 1;
             }
         }
-        if (counter > 2)
-         addSegment(points[n],points[points.length - 1]);
+
+        if (counter > 2) {
+            Arrays.sort(points, points.length - counter, points.length);
+            if(points[0].compareTo(points[points.length - counter]) < 0)
+                addSegment(points[0],points[points.length - 1]);
+        }
+
     }
 
     private void resize(int size) {
