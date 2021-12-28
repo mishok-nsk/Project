@@ -1,35 +1,34 @@
 package collinear;
 import java.util.Arrays;
-//import java.io.*;
-//import edu.princeton.cs.algs4.StdIn;
+
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdDraw;
 import edu.princeton.cs.algs4.StdOut;
 
 public class BruteCollinearPoints {
 
-    LineSegment[] segments;
-    int numOfSegments;
+    private LineSegment[] segments;
+    private int numOfsegments;
 
-    public BruteCollinearPoints(Point[] points) {    // finds all line segments containing 4 points
-        if (points == null) {
+    public BruteCollinearPoints(Point[] inpoints) {    // finds all line segments containing 4 points
+        if (inpoints == null) {
             throw new IllegalArgumentException("argument to BruteCollinearPoints constructor is null");
         }
 
-        for (Point p : points) {
+        for (Point p : inpoints) {
             if (p == null) {
                 throw new IllegalArgumentException("argument to BruteCollinearPoints constructor is null");
             }
         }
-        
+        Point[] points=Arrays.copyOf(inpoints, inpoints.length);
         Arrays.sort(points);
         for (int i = 1; i < points.length; i++) {
             if (points[i].compareTo(points[i-1]) == 0) {
                 throw new IllegalArgumentException("argument to BruteCollinearPoints contains a repeated point");
             }
         }
-        segments = new LineSegment[10];
-        numOfSegments = 0;
+        segments = new LineSegment[1];
+        numOfsegments = 0;
         int length = points.length;
         
         for (int i = 0; i < length - 3; i++) {
@@ -38,33 +37,36 @@ public class BruteCollinearPoints {
                 int numOfPoints = 0;
                 for (int k = j + 1; k < length; k++) {
                     if (slope == points[i].slopeTo(points[k])) {
-                        //numOfPoints++;
-                        if (++numOfPoints == 2) {
-                            if (segments.length == numOfSegments)
-                                resize(numOfSegments*2); 
-                            segments[numOfSegments++] = new LineSegment(points[i], points[k]);
-                            //break;
+                        numOfPoints++;
+                        if (numOfPoints == 2) {
+                            if (segments.length == numOfsegments)
+                                resize(numOfsegments*2); 
+                            segments[numOfsegments++] = new LineSegment(points[i], points[k]);
+                            break;
                         }
 
                     }
                 }
             }
         }
-        resize(numOfSegments);
+        resize(numOfsegments);
     }
     
     private void resize(int size) {
         LineSegment[] copy = new LineSegment[size];
-        for (int i = 0; i < numOfSegments; i++)
+        for (int i = 0; i < numOfsegments; i++)
         copy[i] = segments[i];
         segments = copy;
+        numOfsegments++;
+        numOfsegments--;
     }
 
     public int numberOfSegments() {       // the number of line segments
-        return numOfSegments;
+        return numOfsegments;
     }
     public LineSegment[] segments() {               // the line segments
-        return segments;
+        return Arrays.copyOf(segments, segments.length);
+        // return segments;
     }
 
     public static void main(String[] args) {

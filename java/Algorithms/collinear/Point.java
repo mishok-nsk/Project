@@ -120,7 +120,7 @@ public class Point implements Comparable<Point> {
     public static void main(String[] args) {
         int numOfPoint = StdIn.readInt();
         Point[] points = new Point[numOfPoint];
-        int x,y;
+        int x, y;
         
         for (int i = 0; i < numOfPoint; i++) {
             x = StdIn.readInt();

@@ -1,24 +1,25 @@
 package collinear;
+
 import java.util.Arrays;
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdDraw;
 import edu.princeton.cs.algs4.StdOut;
 
 public class FastCollinearPoints {
-    LineSegment[] segments;
-    int numOfSegments;
+    private LineSegment[] segments;
+    private int numOfSegments;
 
-    public FastCollinearPoints(Point[] points) {    // finds all line segments containing 4 points
-        if (points == null) {
+    public FastCollinearPoints(Point[] inpoints) {    // finds all line segments containing 4 points
+        if (inpoints == null) {
             throw new IllegalArgumentException("argument to FastCollinearPoints constructor is null");
         }
 
-        for (Point p : points) {
+        for (Point p : inpoints) {
             if (p == null) {
                 throw new IllegalArgumentException("argument to FastCollinearPoints constructor is null");
             }
         }
-        
+        Point[] points=Arrays.copyOf(inpoints, inpoints.length);
         Arrays.sort(points);
         for (int i = 1; i < points.length; i++) {
             if (points[i].compareTo(points[i-1]) == 0) {
@@ -26,7 +27,7 @@ public class FastCollinearPoints {
             }
         }
         
-        segments = new LineSegment[10];
+        segments = new LineSegment[1];
         numOfSegments = 0;
         int length = points.length;
         for (int i = 0; i < length - 3; i++) {
@@ -49,8 +50,8 @@ public class FastCollinearPoints {
             else {
                 if (counter > 2) {
                     Arrays.sort(points, j - counter, j);
-                    if(points[0].compareTo(points[j - counter]) < 0)
-                        addSegment(points[0],points[j-1]);
+                    if (points[0].compareTo(points[j - counter]) < 0)
+                        addSegment(points[0], points[j-1]);
                     
                 }
 
@@ -61,8 +62,8 @@ public class FastCollinearPoints {
 
         if (counter > 2) {
             Arrays.sort(points, points.length - counter, points.length);
-            if(points[0].compareTo(points[points.length - counter]) < 0)
-                addSegment(points[0],points[points.length - 1]);
+            if (points[0].compareTo(points[points.length - counter]) < 0)
+                addSegment(points[0], points[points.length - 1]);
         }
 
     }
@@ -77,7 +78,6 @@ public class FastCollinearPoints {
     private void addSegment(Point a, Point b) {
         if (segments.length == numOfSegments)
             resize(numOfSegments*2); 
-        //numOfSegments++;
         segments[numOfSegments++] = new LineSegment(a, b);
     }
 
@@ -85,7 +85,7 @@ public class FastCollinearPoints {
         return numOfSegments;
     }
     public LineSegment[] segments() {               // the line segments
-        return segments;
+        return Arrays.copyOf(segments, segments.length);
     }
 
     public static void main(String[] args) {
