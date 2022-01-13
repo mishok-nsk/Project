@@ -1,82 +1,38 @@
 package KdTree;
 
+/******************************************************************************
+ *  Compilation:  javac RangeSearchVisualizer.java
+ *  Execution:    java RangeSearchVisualizer input.txt
+ *  Dependencies: PointSET.java KdTree.java
+ *
+ *  Read points from a file (specified as a command-line argument) and
+ *  draw to standard draw. Also draw all of the points in the rectangle
+ *  the user selects by dragging the mouse.
+ *
+ *  The range search results using the brute-force algorithm are drawn
+ *  in red; the results using the kd-tree algorithms are drawn in blue.
+ *
+ ******************************************************************************/
+
+import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.Point2D;
 import edu.princeton.cs.algs4.RectHV;
-import edu.princeton.cs.algs4.SET;
 import edu.princeton.cs.algs4.StdDraw;
-import edu.princeton.cs.algs4.In;
 
+public class RangeSearchVisualizer {
 
-public class PointSET {
-    private SET<Point2D> pointset;
-    
-    public PointSET() {                             // construct an empty set of points 
-        pointset = new SET<>();
-    }
-    
-    public boolean isEmpty() {                      // is the set empty? 
-        return pointset.isEmpty();
-    }
-    
-    public int size() {                         // number of points in the set 
-        return pointset.size();
-    }
-    
-    public void insert(Point2D p) {              // add the point to the set (if it is not already in the set)
-        pointset.add(p);
-    }
-    
-    public boolean contains(Point2D p) {           // does the set contain point p? 
-        if (pointset.isEmpty()) return false;
-        for (Point2D point : pointset) {
-            if (point.equals(p)) return true;
-        }
-        return false;
-    }
-    
-    public void draw() {                         // draw all points to standard draw 
-        for (Point2D point : pointset) {
-            point.draw();
-        }
-    }
-    
-    public Iterable<Point2D> range(RectHV rect) {             // all points that are inside the rectangle (or on the boundary) 
-        // if (pointset.isEmpty()) return null;
+    public static void main(String[] args) {
 
-        SET<Point2D> range = new SET<>();
-        for (Point2D p : pointset) {
-            if (rect.contains(p)) range.add(p);
-        }
-        return range;
-    }
-    
-    public Point2D nearest(Point2D p) {             // a nearest neighbor in the set to point p; null if the set is empty 
-        if (pointset.isEmpty()) return null;
-        Point2D champion = new Point2D(0,0);
-        boolean first = true;
-        for (Point2D point : pointset) {
-            if (first) {
-                champion = point;
-                first = false;
-            }
-            else {
-                if (champion.distanceTo(p) > point.distanceTo(p)) champion = point;
-            }
-        }
-        return champion;
-    }
-
-    public static void main(String[] args) {                 // unit testing of the methods (optional) 
         // initialize the data structures from file
         String filename = args[0];
         In in = new In(filename);
         PointSET brute = new PointSET();
-        // KdTree kdtree = new KdTree();
+        KdTree kdtree = new KdTree();
         while (!in.isEmpty()) {
             double x = in.readDouble();
             double y = in.readDouble();
             Point2D p = new Point2D(x, y);
-            // kdtree.insert(p);
+            kdtree.insert(p);
             brute.insert(p);
         }
 
@@ -133,12 +89,10 @@ public class PointSET {
                 p.draw();
 
             // draw the range search results for kd-tree in blue
-            /*
             StdDraw.setPenRadius(0.02);
             StdDraw.setPenColor(StdDraw.BLUE);
             for (Point2D p : kdtree.range(rect))
                 p.draw();
-            */
 
             StdDraw.show();
             StdDraw.pause(20);
