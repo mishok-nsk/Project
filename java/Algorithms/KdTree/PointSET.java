@@ -8,7 +8,7 @@ import edu.princeton.cs.algs4.In;
 
 
 public class PointSET {
-    private SET<Point2D> pointset;
+    private final SET<Point2D> pointset;
     
     public PointSET() {                             // construct an empty set of points 
         pointset = new SET<>();
@@ -23,15 +23,20 @@ public class PointSET {
     }
     
     public void insert(Point2D p) {              // add the point to the set (if it is not already in the set)
-        pointset.add(p);
+        if (p == null) throw new IllegalArgumentException("Method insert sent null argument.");
+        if (!contains(p)) pointset.add(p);
     }
     
     public boolean contains(Point2D p) {           // does the set contain point p? 
+        if (p == null) throw new IllegalArgumentException("Method contains sent null argument.");
         if (pointset.isEmpty()) return false;
+        return pointset.contains(p);
+        /*
         for (Point2D point : pointset) {
             if (point.equals(p)) return true;
         }
         return false;
+        */
     }
     
     public void draw() {                         // draw all points to standard draw 
@@ -42,7 +47,7 @@ public class PointSET {
     
     public Iterable<Point2D> range(RectHV rect) {             // all points that are inside the rectangle (or on the boundary) 
         // if (pointset.isEmpty()) return null;
-
+        if (rect == null) throw new IllegalArgumentException("Method range sent null argument.");
         SET<Point2D> range = new SET<>();
         for (Point2D p : pointset) {
             if (rect.contains(p)) range.add(p);
@@ -51,8 +56,9 @@ public class PointSET {
     }
     
     public Point2D nearest(Point2D p) {             // a nearest neighbor in the set to point p; null if the set is empty 
+        if (p == null) throw new IllegalArgumentException("Method nearest sent null argument.");
         if (pointset.isEmpty()) return null;
-        Point2D champion = new Point2D(0,0);
+        Point2D champion = new Point2D(0, 0);
         boolean first = true;
         for (Point2D point : pointset) {
             if (first) {
@@ -60,7 +66,7 @@ public class PointSET {
                 first = false;
             }
             else {
-                if (champion.distanceTo(p) > point.distanceTo(p)) champion = point;
+                if (champion.distanceSquaredTo(p) > point.distanceSquaredTo(p)) champion = point;
             }
         }
         return champion;
@@ -97,8 +103,10 @@ public class PointSET {
 
             // user starts to drag a rectangle
             if (StdDraw.isMousePressed() && !isDragging) {
-                x0 = x1 = StdDraw.mouseX();
-                y0 = y1 = StdDraw.mouseY();
+                x1 = StdDraw.mouseX();
+                y1 = StdDraw.mouseY();
+                x0 = x1;
+                y0 = y1;
                 isDragging = true;
             }
 
