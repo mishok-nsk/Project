@@ -52,7 +52,6 @@ public class travel {
         Scanner in = new Scanner(System.in);
         int numberOfcity = in.nextInt();
         Graph city = new Graph(numberOfcity);
-        //String coord;
         int[][] coord = new int[numberOfcity][2];
         for(int i = 0; i < numberOfcity; i++) {
             coord[i][0] = in.nextInt();
