@@ -14,6 +14,7 @@ public class travel {
             road = (ArrayList<Integer>[]) new ArrayList[num];
             for(int i = 0; i < num; i++) 
                 road[i] = new ArrayList<Integer>();
+
         }
 
         public void addRoad(int v, int w) {
